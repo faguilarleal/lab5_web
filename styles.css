@@ -41,6 +41,8 @@ body{
 #mensaje{
     background-color: var(--color-terciario);
     border: 1px solid black;
+    overflow-y: scroll;
+    
 }
 
 #contenido-chat{

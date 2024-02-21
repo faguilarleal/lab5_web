@@ -97,9 +97,23 @@ function crearDiv(type,id,id_papa,contenido,className){
 
 }
 
+var cont = 0;
 function mandarMensaje(){
     let text = document.getElementById("text-chat").value;
-    console.log(text);
+    // esta parte seria para agregar el chat a la api
+
+    if(text != ""){
+       // document.getElementById("text-chat").value = ""; // borrar el contenido del textarea
+        //console.log(text);
+        cont++;
+        let nuevo = crearChat(text, "chat"+cont); 
+        // agregar los listados a la api y solo cargar de nuevo los chats
+        let divMensaje = document.getElementById("mensaje");
+        divMensaje.appendChild(nuevo);
+        divMensaje.scrollTop = divMensaje.scrollHeight; // para que el scroll se vaya al final
+    }
+    
+
 }
 
 

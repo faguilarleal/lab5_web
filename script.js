@@ -1,22 +1,10 @@
 
-// //obtener la info de la api
-// let data = fetch('https://jsonplaceholder.typicode.com/posts',
-// {
-//     method: 'GET',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-//     body : JSON.stringify({})
-// })    // todo va dentro del fetch y se guarda en data 
 
-
-// function optenerPost2(){
-//     let posts = fetch('https://jsonplaceholder.typicode.com/posts')
-//     .then(response => response.json())
-//     .then(data => console.log(data))
-//     .catch(error => console.log(error));
-// }
-// ASYNC AWAIT - ME PERMITE ESPERAR LA RESPUESTA DE UNA PETICION ASINCRONA
+let color1 = "#a68069";
+let color2 = "#bf9780";
+let color3 = "#d8af97";
+let color4 = "#ecd6c0";
+let color5 = "#ffffeb";
 
 // async function optenerPosts(){
 async function optenerPosts(){
@@ -42,11 +30,17 @@ function crearChat(texto, id){
     nuevoChat.className = "chat";
     nuevoChat.id = id;
     nuevoChat.innerText = texto;
+    nuevoChat.style.backgroundColor = color1;
+    nuevoChat.style.width = "100%";
+    nuevoChat.style.minHeight = "60px";
+    nuevoChat.style.borderRadius = "8px";
+    nuevoChat.style.border = "1px solid black";
+    nuevoChat.style.marginBottom = "8px";
     return nuevoChat;
 }
 
 
-
+// crear los chats (lado izquierdo de la pantalla)
 async function crearListoDeChats(){
     // mando a traer los post dummys a una api con get
     let misPosts =  await optenerPosts()
@@ -70,13 +64,26 @@ async function crearListoDeChats(){
 }
 
 
+function crearMensaje(texto, user){
+    let nuevoChat = document.createElement("div");
+    nuevoChat.className = "mensaje";
+    nuevoChat.id = user;
+    nuevoChat.innerText = texto;
+    nuevoChat.style.backgroundColor = color1;
+    nuevoChat.style.borderRadius = "5px";
+    nuevoChat.style.padding = "5px";
+    nuevoChat.style.width = "50%"; 
+    nuevoChat.style.minHeight = "50px";
+    nuevoChat.style.border = "1px solid black";
+    nuevoChat.style.marginBottom = "5px";
+    nuevoChat.style.display = "flex";
+    nuevoChat.style.alignSelf = "end";
+
+    return nuevoChat;
+}
 
 
 
-
-
-
-// ----------- PARTE DE HTML ------------
 
 // crear los divs con js
 function crearDiv(type,id,id_papa,contenido,className){
@@ -97,23 +104,50 @@ function crearDiv(type,id,id_papa,contenido,className){
 
 }
 
-var cont = 0;
 function mandarMensaje(){
     let text = document.getElementById("text-chat").value;
     // esta parte seria para agregar el chat a la api
 
     if(text != ""){
-       // document.getElementById("text-chat").value = ""; // borrar el contenido del textarea
+        document.getElementById("text-chat").value = ""; // borrar el contenido del textarea
         //console.log(text);
-        cont++;
-        let nuevo = crearChat(text, "chat"+cont); 
+        let nuevo = crearMensaje(text, "yopis"); 
         // agregar los listados a la api y solo cargar de nuevo los chats
         let divMensaje = document.getElementById("mensaje");
         divMensaje.appendChild(nuevo);
         divMensaje.scrollTop = divMensaje.scrollHeight; // para que el scroll se vaya al final
     }
-    
 
+}
+
+
+// editar los estilos de los divs
+function editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth, radius){
+    let elemento = document.getElementById(id);
+    if(elemento != null){
+         // Aplicar estilos
+        color != null ? elemento.style.backgroundColor = color : null;
+        height != null ? elemento.style.height = height : null;
+        width != null ? elemento.style.width = width : null;
+        display != null ? elemento.style.display = display : null;
+        border != null ? elemento.style.border = border : null;
+        gridRow != null ? elemento.style["grid-template-columns"] = gridRow : null;
+        gridColumn != null ? elemento.style["grid-template-rows"] = gridColumn : null;
+        padding != null ? elemento.style.padding = padding : null;
+        flexDirection != null ? elemento.style.flexDirection = flexDirection : null;
+        overflow != null ? elemento.style.overflow = overflow : null;
+        align != null ? elemento.style.alignItems = align : null;
+        justify != null ? elemento.style.justifyContent = justify : null;
+        margin != null ? elemento.style.margin = margin : null;
+        top != null ? elemento.style.top = top : null;
+        left != null ? elemento.style.left = left : null;
+        bottom != null ? elemento.style.bottom = bottom : null;
+        rigth != null ? elemento.style.rigth = rigth : null;
+        radius != null ? elemento.style.borderRadius = radius : null;
+    }
+    else{
+        console.log("No existe el id: ", id);
+    }
 }
 
 
@@ -125,14 +159,53 @@ crearDiv("div","contenido-perfil","contenedor");
 crearDiv("div","contenido-chat","contenedor");
 crearDiv("textarea","text-chat","contenido-chat",null,"mensaje-chat");
 crearDiv("button","enviar","contenido-chat","Enviar");
+crearDiv("div","mensajes-info","listado-chats");
+crearDiv("div","perfil-info","contenido-perfil");
+crearDiv("img","foto-perfil","perfil-info",null,"foto-perfil");
+crearDiv("div","nombre-perfil","perfil-info","Francis Aguilar");
 
 const boton = document.getElementById("enviar");
 boton.addEventListener("click", mandarMensaje);
 
-//crearListoDeChats();
+crearListoDeChats();
+// editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth)
+editarEstilo("contenedor", color4, "calc(100vh - 0px)","100%", "grid", "1px solid black", "20% 80%", "85% 15%");
+editarEstilo("listado-chats", color4,"auto", "auto", "flex","1px solid black",null, null, "8px","column","scroll", "center", "center");
+editarEstilo("contenido-perfil",color2,"auto","auto","flex",null,null,null,null,null,null,null,"center","auto","auto","auto");
+editarEstilo("mensaje",color5,"auto","auto","flex",null,null,null,null,"column","scroll",null,null,null,null,null,null);
+editarEstilo("contenido-perfil",color2,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
+editarEstilo("contenido-chat",color4,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
+editarEstilo("perfil-info",null,"100%","100%","flex",null,null,null,null,"row",null,"center","space-around", null,null,null,null,null);
+
+// imagen
+let foto = document.getElementById("foto-perfil");
+foto.src = "foto_perfil.jpg";
+foto.style.width = "30%";
+foto.style.height = "40%";
+foto.style.borderRadius = "50%";
+foto.style.marginLeft = "10px";
+foto.style.transition = "0.5s";
+foto.addEventListener("mouseenter", function() {
+    foto.style.height = "50%"; 
+    foto.style.width = "40%"; 
+    
+});
+foto.addEventListener("mouseleave", function() {
+    foto.style.width = "30%";
+    foto.style.height = "40%";
+});
 
 
-// css con javascript
+let perfil = document.getElementById("perfil-info");
+perfil.style.marginRight = "30px";
+
+
+// estilo del body
+document.body.style.margin = "0px";
+document.body.style.overflow = "hidden";
+
+
+// // css con javascript
 
 
 

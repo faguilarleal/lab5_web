@@ -30,7 +30,7 @@ function crearChat(texto, id){
     nuevoChat.className = "chat";
     nuevoChat.id = id;
     nuevoChat.innerText = texto;
-    nuevoChat.style.backgroundColor = color1;
+    nuevoChat.style.backgroundColor = color5;
     nuevoChat.style.width = "100%";
     nuevoChat.style.minHeight = "60px";
     nuevoChat.style.borderRadius = "8px";
@@ -69,7 +69,7 @@ function crearMensaje(texto, user){
     nuevoChat.className = "mensaje";
     nuevoChat.id = user;
     nuevoChat.innerText = texto;
-    nuevoChat.style.backgroundColor = color1;
+    nuevoChat.style.backgroundColor = color3;
     nuevoChat.style.borderRadius = "5px";
     nuevoChat.style.padding = "5px";
     nuevoChat.style.width = "50%"; 
@@ -101,6 +101,7 @@ function crearDiv(type,id,id_papa,contenido,className){
         document.body.appendChild(div);
         //console.log("Creado body");
     }
+    return div;
 
 }
 
@@ -114,6 +115,7 @@ function mandarMensaje(){
         let nuevo = crearMensaje(text, "yopis"); 
         // agregar los listados a la api y solo cargar de nuevo los chats
         let divMensaje = document.getElementById("mensaje");
+        nuevo.style.marginTop = "5px";
         divMensaje.appendChild(nuevo);
         divMensaje.scrollTop = divMensaje.scrollHeight; // para que el scroll se vaya al final
     }
@@ -122,7 +124,7 @@ function mandarMensaje(){
 
 
 // editar los estilos de los divs
-function editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth, radius){
+function editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth, radius, position){
     let elemento = document.getElementById(id);
     if(elemento != null){
          // Aplicar estilos
@@ -135,7 +137,7 @@ function editarEstilo(id, color, height, width, display, border, gridRow, gridCo
         gridColumn != null ? elemento.style["grid-template-rows"] = gridColumn : null;
         padding != null ? elemento.style.padding = padding : null;
         flexDirection != null ? elemento.style.flexDirection = flexDirection : null;
-        overflow != null ? elemento.style.overflow = overflow : null;
+        overflow != null ? elemento.style.overflowY = overflow : null;
         align != null ? elemento.style.alignItems = align : null;
         justify != null ? elemento.style.justifyContent = justify : null;
         margin != null ? elemento.style.margin = margin : null;
@@ -144,38 +146,107 @@ function editarEstilo(id, color, height, width, display, border, gridRow, gridCo
         bottom != null ? elemento.style.bottom = bottom : null;
         rigth != null ? elemento.style.rigth = rigth : null;
         radius != null ? elemento.style.borderRadius = radius : null;
+        position != null ? elemento.style.position = position : null;
     }
     else{
         console.log("No existe el id: ", id);
     }
 }
 
+// editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth)
 
 
 crearDiv("div","contenedor");
-crearDiv("div","listado-chats","contenedor");
+editarEstilo("contenedor", null, "calc(100vh - 0px)","100%", "grid", "1px solid black", "20% 80%", "85% 15%");
+
+let listado = crearDiv("div","listado-chats","contenedor");
+editarEstilo("listado-chats", color1,"auto", "auto", "flex","1px solid black",null, null, "8px","column","scroll", "center", "center", null, null, null, null, null, null, "relative");
+// Guarda la posición actual del scrollbar
+listado.style.scrollTop = 0;
+
+// crearDiv("div","mensajes-info","listado-chats",null,"chat");
+// editarEstilo("mensajes-info",color3,"60px","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
+// let elementito = document.getElementById("mensajes-info");
+// elementito.minHeight = "60px";
+// crearDiv("div","mensajes","listado-chats");
+// editarEstilo("mensajes",color2,"90%","100%","flex",null,null,null,null,null,"scroll","center","space-around", null,null,null,null,null);
+
 crearDiv("div","mensaje","contenedor");
+editarEstilo("mensaje",color5,"auto","auto","flex",null,null,null,null,"column","scroll",null,null,null,null,null,null);
+
 crearDiv("div","contenido-perfil","contenedor");
-crearDiv("div","contenido-chat","contenedor");
-crearDiv("textarea","text-chat","contenido-chat",null,"mensaje-chat");
-crearDiv("button","enviar","contenido-chat","Enviar");
-crearDiv("div","mensajes-info","listado-chats");
+editarEstilo("contenido-perfil",color2,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
 crearDiv("div","perfil-info","contenido-perfil");
+editarEstilo("perfil-info",null,"100%","100%","flex",null,null,null,null,"row",null,"center","space-around", null,null,null,null,null);
 crearDiv("img","foto-perfil","perfil-info",null,"foto-perfil");
 crearDiv("div","nombre-perfil","perfil-info","Francis Aguilar");
+let bt = crearDiv("button","config","perfil-info");
+editarEstilo("config",color5,"35px","35px","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
+bt.innerText = "Conf";
+let n = 1;
+bt.addEventListener("click", function(){
+    if (n == 1){
+        document.getElementById("mensaje").style.backgroundColor = color1;
+        document.getElementById("listado-chats").style.backgroundColor = color4;
+        let c = document.getElementById("yopis");
+        if(c != null){
+            c.style.backgroundColor = color4;
+        }
 
-const boton = document.getElementById("enviar");
-boton.addEventListener("click", mandarMensaje);
+        n = 2;
+    }
+    else{
+        document.getElementById("mensaje").style.backgroundColor = color5;
+        document.getElementById("listado-chats").style.backgroundColor = color1;
+        let c = document.getElementById("yopis");
+        if(c != null){
+            c.style.backgroundColor = color1;
+        }
+
+        n = 1;
+    }
+});
+
+crearDiv("div","contenido-chat","contenedor");
+editarEstilo("contenido-chat",color4,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
+crearDiv("textarea","text-chat","contenido-chat",null,"mensaje-chat");
+crearDiv("button","enviar","contenido-chat","Enviar");
+
+
+//boton
+const botonEnviar = document.getElementById("enviar");
+botonEnviar.addEventListener("click", mandarMensaje);
+
+// Establecer los estilos
+botonEnviar.style.color = color2;
+botonEnviar.style.border = "2px solid rgb(231, 225, 188 )";
+botonEnviar.style.borderRadius = "0px";
+botonEnviar.style.padding = "18px 36px";
+botonEnviar.style.display = "inline-block";
+botonEnviar.style.fontFamily = '"Lucida Console", Monaco, monospace';
+botonEnviar.style.fontSize = "14px";
+botonEnviar.style.letterSpacing = "1px";
+botonEnviar.style.cursor = "pointer";
+botonEnviar.style.boxShadow = "inset 0 0 0 0 #E1B8F3";
+botonEnviar.style.transition = "0.4s";
+botonEnviar.style.mozTransition = "ease-out 0.4s";
+botonEnviar.style.transition = "ease-out 0.4s";
+botonEnviar.style.height = "100%";
+botonEnviar.style.margin = "10px";
+
+
+let user = crearChat("Usuarios", "user");
+user.style.backgroundColor = color4;
+user.style.width = "100%";
+user.style.minHeight = "60px";
+user.style.borderRadius = "8px";
+user.style.border = "1px solid black";
+user.style.marginBottom = "8px";
+let divListados = document.getElementById("listado-chats");
+divListados.appendChild(user);
 
 crearListoDeChats();
-// editarEstilo(id, color, height, width, display, border, gridRow, gridColumn, padding, flexDirection, overflow, align, justify, margin, top, left, bottom, rigth)
-editarEstilo("contenedor", color4, "calc(100vh - 0px)","100%", "grid", "1px solid black", "20% 80%", "85% 15%");
-editarEstilo("listado-chats", color4,"auto", "auto", "flex","1px solid black",null, null, "8px","column","scroll", "center", "center");
-editarEstilo("contenido-perfil",color2,"auto","auto","flex",null,null,null,null,null,null,null,"center","auto","auto","auto");
-editarEstilo("mensaje",color5,"auto","auto","flex",null,null,null,null,"column","scroll",null,null,null,null,null,null);
-editarEstilo("contenido-perfil",color2,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
-editarEstilo("contenido-chat",color4,"100%","100%","flex",null,null,null,null,null,null,"center","space-around", null,null,null,null,null);
-editarEstilo("perfil-info",null,"100%","100%","flex",null,null,null,null,"row",null,"center","space-around", null,null,null,null,null);
+
 
 // imagen
 let foto = document.getElementById("foto-perfil");
@@ -195,6 +266,31 @@ foto.addEventListener("mouseleave", function() {
     foto.style.height = "40%";
 });
 
+// Crear un elemento de textarea
+let textarea = document.getElementById("text-chat");
+
+// Establecer los estilos
+textarea.style.width = "100%";
+textarea.style.height = "90%";
+textarea.style.padding = "12px 20px";
+textarea.style.boxSizing = "border-box";
+textarea.style.border = "2px solid #ccc";
+textarea.style.borderRadius = "4px";
+textarea.style.backgroundColor = "#f8f8f8";
+textarea.style.fontSize = "16px";
+textarea.style.resize = "none";
+textarea.style.marginLeft = "10px";
+textarea.setAttribute("maxlength","140");
+textarea.setAttribute("placeholder","Escribe algo...");
+
+textarea.addEventListener("keydown", function(event){
+    if(event.keyCode === 13){
+        event.preventDefault();
+        mandarMensaje(); 
+        textarea.value = "";
+ }   });
+
+
 
 let perfil = document.getElementById("perfil-info");
 perfil.style.marginRight = "30px";
@@ -205,7 +301,20 @@ document.body.style.margin = "0px";
 document.body.style.overflow = "hidden";
 
 
-// // css con javascript
+
+// Agrega el evento de hover
+botonEnviar.addEventListener("mouseenter", function() {
+    botonEnviar.style.boxShadow = "inset 0 0 0 50px #E1B8F3";
+});
+
+// Elimina la clase al salir del hover
+botonEnviar.addEventListener("mouseleave", function() {
+    botonEnviar.style.boxShadow = "none"; // Eliminar la sombra
+});
+
+
+
+
 
 
 
